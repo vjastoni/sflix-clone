@@ -1,0 +1,48 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/form.css" />
+</head>
+
+<body>
+  <%- include('../includes/navigation.ejs') %>
+  <main>
+    <form class="form" action="/admin/<% if (editing) { %>edit-movie<% } else { %>add-movie<% } %>" method="POST">
+      <h2><% if (editing) { %> Edit Movie <% } else  { %> Add Movies <% } %></h2>
+      <div class="form-control">
+        <label for="title">Title</label>
+        <input placeholder="ex. Harry Potter" type="text" name="title" id="title" value="<% if (editing) { %><%= movie.title %><% } %>" />
+      </div>
+      <div class="form-control">
+        <label for="price">Price</label>
+        <input placeholder="ex. $19.56" type="number" name="price" id="price" step="0.01" value="<% if (editing) { %><%= movie.price %><% } %>" />
+      </div>
+      <div class="form-control">
+        <label for="description">Image Url</label>
+        <input type="text" id="desctiption" name="description" value="<% if (editing) { %><%= movie.description %><% } %>" />
+      </div>
+      <div class="form-control">
+        <label for="ratings">Ratings</label>
+        <select name="ratings" id="ratings" value="<% if (editing) { %><%= movie.ratings %><% } %>">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-control">
+        <% if (editing) { %>
+        <input type="hidden" value="<%= movie.id %>" name="movieId" />
+        <% } %>
+        <button class="button" type="submit">
+          <% if (editing) { %>
+          Update Movie
+          <% } else { %>
+          Add Movie
+          <% } %>
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <%- include('../includes/end.ejs') %>

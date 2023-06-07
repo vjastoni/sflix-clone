@@ -1,0 +1,41 @@
+<header>
+  <nav class="main_header">
+    <img
+      class="sflix"
+      src="https://img.sflix.to/xxrz/400x400/100/66/35/66356c25ce98cb12993249e21742b129/66356c25ce98cb12993249e21742b129.png"
+      alt="sflix icon"
+    />
+    <ul class="item_list">
+      <li class="item">
+        <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+      </li>
+      <li class="item">
+        <a class="<%= path === '/movies' ? 'active' : '' %>" href="/movies"
+          >Movies</a
+        >
+      </li>
+      <li class="item">
+        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+      </li>
+      <li class="item">
+        <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders"
+          >Orders</a
+        >
+      </li>
+      <li class="item">
+        <a
+          class="<%= path === '/admin/add-movie' ? 'active' : '' %>"
+          href="/admin/add-movie"
+          >Add Movie</a
+        >
+      </li>
+      <li class="item">
+        <a
+          class="<%= path === '/admin/movies' ? 'active' : '' %>"
+          href="/admin/movies"
+          >Admin Movies</a
+        >
+      </li>
+    </ul>
+  </nav>
+</header>

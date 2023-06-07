@@ -1,0 +1,31 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/movie.css" />
+</head>
+
+<body>
+  <%- include('../includes/navigation.ejs') %>
+
+  <main>
+    <% if (mov.length > 0) { %>
+    <div class="grid">
+      <% for (let movie of mov) { %>
+      <article class="card">
+        <img class="image" src="<%= movie.description %>" />
+        <div class="details">
+          <p class="title"><%= movie.title %></p>
+          <p>Price: $ <%= movie.price %>.00</p>
+          <p>Ratings: <%= movie.ratings %> star/s ★</p>
+          <div class="add-details">
+            <a class="details-btn" href="/movies/<%= movie.id %>">Details</a>
+            <%- include('../includes/add-to-cart.ejs', {movie: movie}) %>
+          </div>
+        </div>
+      </article>
+      <% } %>
+    </div>
+    <% } else { %>
+    <h1>No Movies Found!</h1>
+    <% } %>
+  </main>
+
+  <%- include('../includes/end.ejs') %>
