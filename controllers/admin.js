@@ -4,66 +4,106 @@ exports.getAddMovie = (req, res, next) => {
   res.render('admin/edit-movie', {
     pageTitle: 'Add Movie',
     path: '/admin/add-movie',
-    editing: false
+    editing: false,
   });
 };
 
 exports.postAddMovie = (req, res, next) => {
-  const movie = new Movie( 
-    null,
-    req.body.title,
-    req.body.price,
-    req.body.description,
-    req.body.ratings
-  );
-  movie.save();
-  res.redirect('/');
+  const title = req.body.title;
+  const price = req.body.price;
+  const imageUrl = req.body.imageUrl;
+  const ratings = req.body.ratings;
+  req.user
+    .createMovie({
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      ratings: ratings,
+    })
+    .then((result) => {
+      console.log(result);
+      res.redirect('/admin/movies');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getEditMovie = (req, res, next) => {
   const editMode = req.query.edit;
-  if(!editMode){
-    return res.redirect('/')
+  if (!editMode) {
+    return res.redirect('/');
   }
   const movId = req.params.movieId;
-  Movie.findById(movId, movie =>{
-    if(!movie){
-      return res.redirect('/')
-    }
-    res.render('admin/edit-movie', {
-      pageTitle: 'Edit Movie',
-      path: 'admin/edit-movie',
-      editing: editMode,
-      movie: movie
+  req.user
+    .getMovies({ where: { id: movId } })
+    // Movie.findByPk(movId)
+    .then((movies) => {
+      const movie = movies[0];
+      if (!movie) {
+        return res.redirect('/');
+      }
+      res.render('admin/edit-movie', {
+        pageTitle: 'Edit Movie',
+        path: 'admin/edit-movie',
+        editing: editMode,
+        movie: movie,
+      });
     })
-  })
-}
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 exports.postEditMovie = (req, res, next) => {
-   const movId = req.body.movieId;
-   const updatedTitle = req.body.title;
-   const updatedPrice = req.body.price;
-   const updatedImageUrl = req.body.description;
-   const updatedRatings = req.body.ratings;
-   const updatedMovie = new Movie(
-    movId,updatedTitle, updatedPrice,updatedImageUrl, updatedRatings
-   )
-   updatedMovie.save();
-   res.redirect('/admin/movies')
-}
+  const movId = req.body.movieId;
+  const updatedTitle = req.body.title;
+  const updatedPrice = req.body.price;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedRatings = req.body.ratings;
+  Movie.findByPk(movId)
+    .then((movie) => {
+      movie.title = updatedTitle;
+      movie.price = updatedPrice;
+      movie.imageUrl = updatedImageUrl;
+      movie.ratings = updatedRatings;
+      return movie.save();
+    })
+    .then((result) => {
+      console.log('Updated Movie');
+      res.redirect('/admin/movies');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 exports.getMovies = (req, res, next) => {
-  Movie.fetchAll((movies) => {
-    res.render('admin/movies', {
-      mov: movies,
-      pageTitle: 'Admin Movies',
-      path: '/admin/movies',
+  req.user
+    .getMovies()
+    .then((movies) => {
+      res.render('admin/movies', {
+        mov: movies,
+        pageTitle: 'Admin Movies',
+        path: '/admin/movies',
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.postDeleteMovie = (req, res, next) => {
   const movId = req.body.movieId;
-  Movie.deleteById(movId);
-  res.redirect('/admin/movies')
-}
+  Movie.findByPk(movId)
+    .then((movie) => {
+      return movie.destroy();
+    })
+    .then((result) => {
+      console.log('Destroyed Movie');
+      res.redirect('/admin/movies');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
