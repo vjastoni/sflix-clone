@@ -9,6 +9,10 @@ const sequelize = require('./util/database');
 //Models
 const Movie = require('./models/movie');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -39,6 +43,17 @@ app.use(errorController.get404);
 // One to Many
 Movie.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Movie);
+// One to One
+User.hasOne(Cart);
+Cart.belongsTo(User);
+//Many to many
+Cart.belongsToMany(Movie, { through: CartItem });
+Movie.belongsToMany(Cart, { through: CartItem });
+//One to many
+Order.belongsTo(User);
+User.hasMany(Order);
+//Many to many
+Order.belongsToMany(Movie, { through: OrderItem });
 
 sequelize
   // .sync({ force: true })
@@ -54,6 +69,9 @@ sequelize
   })
   .then((user) => {
     // console.log(user);
+    return user.createCart();
+  })
+  .then((cart) => {
     app.listen(3000);
   })
   .catch((err) => {

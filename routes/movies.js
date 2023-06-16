@@ -8,16 +8,18 @@ router.get('/', movieController.getIndex);
 
 router.get('/movies', movieController.getMovies);
 
-router.get('/movies/:movieId', movieController.getMovie)
+router.get('/movies/:movieId', movieController.getMovie);
 
 router.get('/cart', movieController.getCart);
 
-router.post('/cart-delete-movie', movieController.postCartDeleteMovie)
+router.post('/cart-delete-movie', movieController.postCartDeleteMovie);
 
 router.post('/cart', movieController.postCart);
 
+router.post('/create-order', movieController.postOrder);
+
 router.get('/orders', movieController.getOrders);
 
-router.get('/checkout', movieController.getCheckout);
+// router.get('/checkout', movieController.getCheckout);
 
 module.exports = router;

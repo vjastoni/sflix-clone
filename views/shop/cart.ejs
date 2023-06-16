@@ -9,15 +9,21 @@
     <ul class="whitey">
       <% movies.forEach(p => { %>
       <li>
-        <p style="font-weight: bold;"> <%= p.movieData.title %> </p>
-        <p>Quantity: <%= p.qty %></p>
+        <p style="font-weight: bold;"> <%= p.title %> </p>
+        <p>Quantity: <%= p.cartItem.quantity %></p>
         <form action="/cart-delete-movie" method="POST">
-          <input type="hidden" value="<%= p.movieData.id %>" name="movieId" />
+          <input type="hidden" value="<%= p.id %>" name="movieId" />
           <button class="btn" type="submit">Delete</button>
         </form>
       </li>
       <% }); %>
     </ul>
+    <hr>
+    <div style="width: 100vw; display: flex; justify-content: center; align-items: center;">
+      <form action="/create-order" method="POST">
+        <button type="submit" class="btn">Order now</button>
+      </form>
+   </div>
     <% } else { %>
     <h1 style="padding-left: 20px; color: white;">No Movies in Cart!</h1>
     <% } %>

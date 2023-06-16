@@ -3,7 +3,24 @@
 
 <body>
   <%- include('../includes/navigation.ejs') %>
-  <main>
+  <main style="color:white">
+    <% if (orders.length <= 0) { %>
     <h1 style="padding-left: 20px; color: white;">Nothing There!</h1>
+    <% } else { %>
+      <ul>
+        <% orders.forEach(order => { %>
+          <li>
+            <h1># <%= order.id %></h1>
+              <ul>
+                <% order.movies.forEach( movie => { %>
+                  <li>
+                    <%= movie.title %> (<%= movie.orderItem.quantity %>)
+                  </li>
+                <% }); %>  
+              </ul>
+          </li>
+       <% }); %>
+      </ul>
+    <% } %>
   </main>
   <%- include('../includes/end.ejs') %>
